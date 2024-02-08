@@ -1,5 +1,6 @@
 "use strict";
 
+
 /** Connect Four
  *
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
@@ -7,68 +8,72 @@
  * board fills (tie)
  */
 
-const WIDTH = 7;
-const HEIGHT = 6;
 
-let currPlayer = 1; // active player: 1 or 2
-const board = []; // array of rows, each row is array of cells  (board[y][x])
-// (board[5][0] would be the bottom-left spot on the board)
-
-/** makeBoard: fill in global `board`:
- *    board = array of rows, each row is array of cells  (board[y][x])
- */
-
-function makeBoard() {
-  for (let y = 0; y < HEIGHT; y++) {
-    const emptyRow = Array(WIDTH).fill(null);
-    board.push(emptyRow);
+class Game {
+  constructor(width, height, board, currPlayer) {
+    this.width = width;
+    this.height = height;
+    this.board = [];
+    this.currPlayer = 1;
   }
-}
-
-/** makeHtmlBoard: make HTML table and row of column tops. */
-
-function makeHtmlBoard() {
-  const htmlBoard = document.getElementById("board");
-
-  // TODO: add comment for this code
-  const top = document.createElement("tr");
-  top.setAttribute("id", "column-top");
-
-  for (let x = 0; x < WIDTH; x++) {
-    const headCell = document.createElement("td");
-    headCell.setAttribute("id", `top-${x}`);
-    headCell.addEventListener("click", handleClick);
-    top.append(headCell);
-  }
-  htmlBoard.append(top);
-
-  // dynamically creates the main part of html board
-  // uses HEIGHT to create table rows
-  // uses WIDTH to create table cells for each row
-  for (let y = 0; y < HEIGHT; y++) {
-    const row = document.createElement('tr');
-
-    for (let x = 0; x < WIDTH; x++) {
-      const cell = document.createElement('td');
-      cell.setAttribute('id', `c-${y}-${x}`);
-      row.append(cell);
+  makeBoard() {
+    for (let y = 0; y < this.height; y++) {
+      const emptyRow = Array(this.width).fill(null);
+      this.board.push(emptyRow);
     }
-
-    htmlBoard.append(row);
   }
-}
+  makeHtmlBoard() {
+    const htmlBoard = document.getElementById("board");
+   // creating the table-row elements for the dom
+  //also attaching unique IDs onto each piece
+    const top = document.createElement("tr");
+    top.setAttribute("id", "column-top");
+
+    for (let x = 0; x < this.width; x++) {
+      const headCell = document.createElement("td");
+      headCell.setAttribute("id", `top-${x}`);
+      headCell.addEventListener("click", handleClick);
+      top.append(headCell);
+    }
+    htmlBoard.append(top);
+
+    // dynamically creates the main part of html board
+    // uses HEIGHT to create table rows
+    // uses WIDTH to create table cells for each row
+    for (let y = 0; y < this.height; y++) {
+      const row = document.createElement('tr');
+
+      for (let x = 0; x < this.width; x++) {
+        const cell = document.createElement('td');
+        cell.setAttribute('id', `c-${y}-${x}`);
+        row.append(cell);
+      }
+
+      htmlBoard.append(row);
+    }
+  }
+  findSpotForCol(x) {
+    for (let y = this.height - 1; y >= 0; y--) {
+      if (this.board[y][x] === null) {
+        return y;
+      }
+    }
+    return null;
+  }
+
+
+
+
+
+
+}// this is bottom of our class bracket
+
+
+
 
 /** findSpotForCol: given column x, return y coordinate of furthest-down spot
  *    (return null if filled) */
 
-function findSpotForCol(x) {
-  for (let y = HEIGHT - 1; y >= 0; y--) {
-    if (board[y][x] === null) {
-      return y;
-    }
-  }
-  return null;
-}
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
@@ -97,12 +102,12 @@ function checkForWin() {
     //  - returns true if all are legal coordinates & all match currPlayer
 
     return cells.every(
-        ([y, x]) =>
-            y >= 0 &&
-            y < HEIGHT &&
-            x >= 0 &&
-            x < WIDTH &&
-            board[y][x] === currPlayer
+      ([y, x]) =>
+        y >= 0 &&
+        y < HEIGHT &&
+        x >= 0 &&
+        x < WIDTH &&
+        board[y][x] === currPlayer
     );
   }
 
@@ -162,3 +167,5 @@ function start() {
 }
 
 start();
+
+
