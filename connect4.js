@@ -1,5 +1,8 @@
 "use strict";
 
+const startButton = document.getElementById("button");
+const gameDiv = document.getElementById("game");
+const endButton = document.querySelector('.end');
 
 /** Connect Four
  *
@@ -9,16 +12,43 @@
  */
 // let connect4 = new Game(1,2,1)
 
+
 class Game {
-  constructor(w, h) {
+  //TODO: add default below to w/h
+  constructor(w = 6, h = 7) {
+
     this.width = w;
     this.height = h;
     this.currPlayer = 1;
     this.board = [];
     this.start();
+    this.startTheGame();
+  }
+  /** button to begin the game */
+
+  startTheGame() {
+    // startButton.addEventListener('click', this.confirmRestart);
+    startButton.addEventListener('click', function () {
+      gameDiv.classList.toggle('end');
+      // const boardElement = document.getElementById('board');
+      // let htmlBoard = document.getElementById('board');
+
+      // htmlBoard.remove();
+      // this.makeHtmlBoard();
+    });
   }
 
+  makeAlert() {
+    alert('this is a warning');
+  }
+
+  /** makeBoard: fill in global `board`:
+   *    board = array of rows, each row is array of cells  (board[y][x])
+   */
+
+
   makeBoard() {
+    const board = [];
     for (let y = 0; y < this.height; y++) {
       const emptyRow = Array(this.width).fill(null);
       this.board.push(emptyRow);
@@ -26,6 +56,8 @@ class Game {
 
     return this.board;
   }
+
+  /** makeHtmlBoard: make HTML table and row of column tops. */
 
   makeHtmlBoard() {
     const htmlBoard = document.getElementById("board");
@@ -61,6 +93,9 @@ class Game {
     }
   }
 
+  /** findSpotForCol: given column x, return y coordinate of furthest-down spot
+   *    (return null if filled) */
+
   findSpotForCol(x) {
     for (let y = this.height - 1; y >= 0; y--) {
       if (this.board[y][x] === null) {
@@ -69,6 +104,7 @@ class Game {
     }
     return null;
   }
+  /** placeInTable: update DOM to place piece into HTML table of board */
 
   placeInTable(y, x) {
     const piece = document.createElement('div');
@@ -78,11 +114,12 @@ class Game {
     const spot = document.getElementById(`c-${y}-${x}`);
     spot.append(piece);
   }
-
+  /** endGame: announce game end */
   endGame(msg) {
     alert(msg);
   }
 
+  /** checkForWin: check board cell-by-cell for "does a win start here?" */
   checkForWin() {
 
     function _win(cells) {
@@ -138,21 +175,33 @@ class Game {
 
     // check for win
     if (this.checkForWin()) {
-      return this.endGame(`Player ${this.currPlayer} won!`);
+      this.endGame(`Player ${this.currPlayer} won!`);
+      return this.confirmRestart();
+
     }
 
     // check for tie: if top row is filled, board is filled
     if (this.board[0].every(cell => cell !== null)) {
-      return this.endGame('Tie!');
+      this.endGame('Tie!');
+      return this.confirmRestart();
     }
 
     // switch players
     this.currPlayer = this.currPlayer === 1 ? 2 : 1;
   }
-
+  /** Start game. */
   start() {
     this.makeBoard();
     this.makeHtmlBoard();
+  }
+
+  confirmRestart() {                                                         //restart function that reloads the page, if not clicked it gives an alt message
+    const isConfirmed = window.confirm("Reset Game?");
+    if (isConfirmed) {
+      location.reload();
+    } else {
+      alert("cancel");
+    }
   }
 }
 
