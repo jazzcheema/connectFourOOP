@@ -2,6 +2,7 @@
 
 let testGame;
 
+
 beforeEach(function () {
   console.log("Run once before each test starts");
 
@@ -87,7 +88,7 @@ describe('placeInTable', function () {
 describe('checkForWin', function () {
 
   it('returns true if no winner', function () {
-    expect(testGame.checkForWin()).toEqual(true);
+    expect(testGame.checkForWin()).toEqual(false);
   });
 
   it('returns true if there is a horizontal winner', function () {
