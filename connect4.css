@@ -48,6 +48,13 @@
   background-color: red;
 }
 
+.restart{
+  margin-top: px;
+  display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color:green;
+}
 
 .end {
   display: none !important

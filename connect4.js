@@ -1,9 +1,10 @@
 "use strict";
 
-const startButton = document.getElementById("button");
+const startButton = document.querySelector('.start');
 const gameDiv = document.getElementById("game");
 const endButton = document.querySelector('.end');
-
+// const restartButton = document.querySelector('button');
+const realButton = document.querySelector('button');
 /** Connect Four
  *
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
@@ -14,7 +15,6 @@ const endButton = document.querySelector('.end');
 
 
 class Game {
-  //TODO: add default below to w/h
   constructor(w = 6, h = 7) {
 
     this.width = w;
@@ -26,21 +26,24 @@ class Game {
   }
   /** button to begin the game */
 
+
   startTheGame() {
     // startButton.addEventListener('click', this.confirmRestart);
-    startButton.addEventListener('click', function () {
-      gameDiv.classList.toggle('end');
-      // const boardElement = document.getElementById('board');
-      // let htmlBoard = document.getElementById('board');
-
-      // htmlBoard.remove();
-      // this.makeHtmlBoard();
+    startButton.addEventListener('click', () => {
+      if (startButton.classList.contains('start')) {
+        gameDiv.classList.toggle('end');
+        // restartButton.classList.toggle('restart');
+        startButton.classList.toggle('restart');
+        startButton.classList.toggle('start');
+        realButton.innerText = 'Clear';
+      } else if (startButton.classList.contains('restart')) {
+        // Logic for restart class
+        this.confirmRestart();
+      }
     });
-  }
+  };
 
-  makeAlert() {
-    alert('this is a warning');
-  }
+
 
   /** makeBoard: fill in global `board`:
    *    board = array of rows, each row is array of cells  (board[y][x])
@@ -204,6 +207,7 @@ class Game {
     }
   }
 }
+
 
 new Game(6, 7);
 
